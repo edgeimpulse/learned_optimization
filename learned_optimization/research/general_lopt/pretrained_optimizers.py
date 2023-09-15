@@ -27,7 +27,15 @@ from learned_optimization.optimizers import base as opt_base
 
 from learned_optimization.research.general_lopt import hyper_v2
 
-_pretrain_root = 'gs://gresearch/learned_optimization/pretrained_lopts/'
+# TODO; what path should this be for running in container? TODO: compare to mobilenet weights
+
+# mkdir -p /data2/edge_impulse/learned_optimization_gs_mirror/
+# cd /data2/edge_impulse/learned_optimization_gs_mirror/
+# gcloud storage cp -r gs://gresearch/learned_optimization/pretrained_lopts/aug12_continue_on_bigger_2xbs_200kstep_bigproblem_v2_5620 .
+
+#_pretrain_root = 'gs://gresearch/learned_optimization/pretrained_lopts/'
+_pretrain_root = '/data2/edge_impulse/learned_optimization_gs_mirror/'
+
 
 opt_names = [
     'march20_2022_march18_parametric_v4_dz',
@@ -139,8 +147,9 @@ def _pretrained_lopt_load_baseline(path):
 
   return fn
 
-
-_pretrain_no_config_root = 'gs://gresearch/learned_optimization/pretrained_lopts/no_config/'
+# we want no references here to gs:// so if something is attempted to be loaded from
+# here we want a HARD visible failure, not some long timeout
+_pretrain_no_config_root = None  # 'gs://gresearch/learned_optimization/pretrained_lopts/no_config/'
 
 aug11_aug4_trunc10per_avg = _pretrained_lopt_load_baseline(
     os.path.join(_pretrain_no_config_root,

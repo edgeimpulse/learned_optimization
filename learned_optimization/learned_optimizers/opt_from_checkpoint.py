@@ -103,6 +103,8 @@ def opt_from_checkpoint(
     Optimizer instance created from the learned optimizer + weights.
   """
 
+  print("checkpoint_path", checkpoint_path, "config_path", config_path)
+
   if config_path is None:
     config_path = "/".join(checkpoint_path.split("/")[:-1]) + "/config.gin"
 
