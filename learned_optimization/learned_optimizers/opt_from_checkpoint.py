@@ -103,6 +103,8 @@ def opt_from_checkpoint(
     Optimizer instance created from the learned optimizer + weights.
   """
 
+  print(f"Loading velo checkpoint from checkpoint_path [{checkpoint_path}] with config_path [{config_path}]")
+
   if config_path is None:
     config_path = "/".join(checkpoint_path.split("/")[:-1]) + "/config.gin"
 
@@ -133,7 +135,6 @@ def opt_from_checkpoint(
           logging.info("Parsing bindings")
           for b in bindings:
             logging.info(b)
-            print(b)
           gin.parse_config(bindings, skip_unknown=True)
 
         configurable = gin.query_parameter(f"{scope}/run_train.lopt")
