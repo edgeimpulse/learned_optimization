@@ -28,7 +28,7 @@ from learned_optimization.optimizers import base as opt_base
 from learned_optimization.research.general_lopt import hyper_v2
 
 from urllib.request import urlretrieve
-
+import shutil
 
 opt_names = [
     # 'march20_2022_march18_parametric_v4_dz',
@@ -122,10 +122,14 @@ if not os.path.exists(_pretrain_root):
   for opt_name in opt_names:
     os.makedirs(os.path.join(_pretrain_root, opt_name))
     for checkpoint_file in ['config.gin', 'params']:
-      url = f"{os.environ.get('WEIGHTS_PREFIX')}transfer-learning-weights/velo/{opt_name}/{checkpoint_file}"
-      filename = os.path.join(_pretrain_root, opt_name, checkpoint_file)
-      print(f"fetching velo checkpoint file [{url}] -> [{filename}]")
-      urlretrieve(url, filename)
+      source_path = f"{os.environ.get('WEIGHTS_PREFIX')}transfer-learning-weights/velo/{opt_name}/{checkpoint_file}"
+      is_url = source_path.startswith('http')  # clumsy?
+      dest_filename = os.path.join(_pretrain_root, opt_name, checkpoint_file)
+      print(f"fetching velo checkpoint file [{source_path}] ( is_url={is_url} ) -> [{dest_filename}]")
+      if is_url:
+        urlretrieve(source_path, dest_filename)
+      else:
+        shutil.copyfile(source_path, dest_filename)
 
 
 def _build(path):
