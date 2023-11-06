@@ -122,7 +122,7 @@ if not os.path.exists(_pretrain_root):
   for opt_name in opt_names:
     os.makedirs(os.path.join(_pretrain_root, opt_name))
     for checkpoint_file in ['config.gin', 'params']:
-      source_path = os.path.join(WEIGHTS_PREFIX, 'transfer-learning-weights' 'velo', opt_name, checkpoint_file)
+      source_path = os.path.join(WEIGHTS_PREFIX, 'transfer-learning-weights', 'velo', opt_name, checkpoint_file)
       is_url = source_path.startswith('http')  # clumsy?
       dest_filename = os.path.join(_pretrain_root, opt_name, checkpoint_file)
       print(f"fetching velo checkpoint file [{source_path}] ( is_url={is_url} ) -> [{dest_filename}]")
