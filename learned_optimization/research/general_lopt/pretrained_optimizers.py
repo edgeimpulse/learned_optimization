@@ -116,13 +116,13 @@ opt_names = [
 _pretrain_root = "/tmp/velo_weights/"
 
 if not os.path.exists(_pretrain_root):
-  if not 'WEIGHTS_PREFIX' in os.environ:
-    raise Exception("Unable to download velo checkpoint from ${WEIGHTS_PREFIX}transfer-learning-weights/velo/. WEIGHTS_PREFIX env var is not set")
+  WEIGHTS_PREFIX = os.environ.get('WEIGHTS_PREFIX', os.getcwd())
+
   # TODO: test other sets of weights.
   for opt_name in opt_names:
     os.makedirs(os.path.join(_pretrain_root, opt_name))
     for checkpoint_file in ['config.gin', 'params']:
-      source_path = f"{os.environ.get('WEIGHTS_PREFIX')}transfer-learning-weights/velo/{opt_name}/{checkpoint_file}"
+      source_path = os.path.join(WEIGHTS_PREFIX, 'transfer-learning-weights' 'velo', opt_name, checkpoint_file)
       is_url = source_path.startswith('http')  # clumsy?
       dest_filename = os.path.join(_pretrain_root, opt_name, checkpoint_file)
       print(f"fetching velo checkpoint file [{source_path}] ( is_url={is_url} ) -> [{dest_filename}]")
@@ -195,4 +195,3 @@ gin.external_configurable(sep14_sep10_compare2_v2, 'sep14_sep10_compare2_v2')
 sep14_aug20run_prior0 = _pretrained_lopt_load_baseline(
     os.path.join(_pretrain_no_config_root, 'sep14_aug20run_prior0.checkpoint'))
 gin.external_configurable(sep14_aug20run_prior0, 'sep14_aug20run_prior0')
-
