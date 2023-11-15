@@ -113,24 +113,11 @@ opt_names = [
 # the original one, in case we need to fetch more weights, was
 #_pretrain_root = 'gs://gresearch/learned_optimization/pretrained_lopts/'
 
-_pretrain_root = "/tmp/velo_weights/"
-
-if not os.path.exists(_pretrain_root):
-  WEIGHTS_PREFIX = os.environ.get('WEIGHTS_PREFIX', os.getcwd())
-
-  # TODO: test other sets of weights.
-  for opt_name in opt_names:
-    os.makedirs(os.path.join(_pretrain_root, opt_name))
-    for checkpoint_file in ['config.gin', 'params']:
-      source_path = os.path.join(WEIGHTS_PREFIX, 'transfer-learning-weights', 'velo', opt_name, checkpoint_file)
-      is_url = source_path.startswith('http')  # clumsy?
-      dest_filename = os.path.join(_pretrain_root, opt_name, checkpoint_file)
-      print(f"fetching velo checkpoint file [{source_path}] ( is_url={is_url} ) -> [{dest_filename}]")
-      if is_url:
-        urlretrieve(source_path, dest_filename)
-      else:
-        shutil.copyfile(source_path, dest_filename)
-
+# we load weights from default path in container for pretrained
+# weights /app/transfer-learning-weights unless things have been overriden
+# for some out of container development
+WEIGHTS_PREFIX = os.environ.get('WEIGHTS_PREFIX', 'app')
+_pretrain_root = os.path.join(WEIGHTS_PREFIX, 'transfer-learning-weights', 'velo')
 
 def _build(path):
 
