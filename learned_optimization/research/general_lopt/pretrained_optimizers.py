@@ -116,7 +116,7 @@ opt_names = [
 # we load weights from default path in container for pretrained
 # weights /app/transfer-learning-weights unless things have been overriden
 # for some out of container development
-WEIGHTS_PREFIX = os.environ.get('WEIGHTS_PREFIX', 'app')
+WEIGHTS_PREFIX = os.environ.get('WEIGHTS_PREFIX', '/app')
 _pretrain_root = os.path.join(WEIGHTS_PREFIX, 'transfer-learning-weights', 'velo')
 
 def _build(path):
